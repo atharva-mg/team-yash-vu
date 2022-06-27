@@ -1,6 +1,7 @@
 # IBM Hackathon
 # Project - Password Hacks
 
+
 class Profile:
     # profile = {
     #     "name": "Hasnain",
@@ -14,19 +15,24 @@ class Profile:
     #     "random_num": "n"
     # }
     profile = {}
+
     def details(self):
         print("\r\n[+] Insert The Information About The Victim To Make A Dictionary")
         print("[+] If You Don't Know All The Info, Just Hit Enter \r\n")
 
         name = input("> First Name : ").lower()
-        while name == " ":
+        while name == " " or name == "":
             print("\r\n[-] You Must Enter At Least A Name")
-            name = input("> Name : ").lower()
+            name = input("> First Name : ").lower()
         self.profile["name"] = str(name)
 
-        self.profile["surname"] = input("> Surname : ").lower()
+        self.profile["surname"] = input("> Last Name : ").lower()
         self.profile["nickname"] = input("> Nickname : ").lower()
-        self.profile["birthdate"] = input("> Birthdate (DDMMYYYY) : ")
+        birthdate = input("> Birthdate (DDMMYYYY) : ")
+        while len(birthdate) !=0 and len(birthdate)!=8:
+            print("\r\n[-] You Must Enter 8 digiys for birthday! ")
+            birthdate = input("> Birthdate (DDMMYYYY) : ")
+        self.profile["birthdate"] = str(birthdate)
 
         print("\r\n")
 
@@ -34,16 +40,14 @@ class Profile:
         self.profile["college"] = input("> College Name : ").lower()
         print("\r\n")
 
-        #self.profile["mobile"] = input("> Enter Mobile Number (+91) : ")
+        # self.profile["mobile"] = input("> Enter Mobile Number (+91) : ")
         self.profile["words"] = [""]
         words1 = input(
             "> Do You Want To Add Some Key Words About The Target ? Y/N : "
         ).lower()
         words2 = ""
         if words1 == "y":
-            words2 = input(
-                "> Enter Words, Separated by comma : "
-            ).replace(" ", "")
+            words2 = input("> Enter Words, Separated by comma : ").replace(" ", "")
         self.profile["words"] = words2.split(",")
 
         self.profile["special_char"] = [""]
@@ -55,16 +59,22 @@ class Profile:
             special_char2 = input(
                 "> Enter Special Characters, Separated by comma : "
             ).replace(" ", "")
-        self.profile["special_characters"] = special_char2.split(",")
+        self.profile["special_char"] = special_char2.split(",")
 
         self.profile["random_num"] = input(
             "> Do You Want To Add Some Random Numbers At The End Of Words ? Y/N : "
         ).lower()
 
     def combine(self, sequence, start, special=""):
-        for mystr in sequence:
-            for mystr1 in start:
-                yield mystr + special + mystr1
+        if len(special) > 0:
+            for symb in special:
+                for mystr in sequence:
+                    for mystr1 in start:
+                        yield mystr + symb + mystr1
+        else:
+            for mystr in sequence:
+                for mystr1 in start:
+                    yield mystr + special + mystr1
 
     def concatStringsRandomNumbers(self, sequence, start, stop):
         for mystr in sequence:
@@ -72,8 +82,17 @@ class Profile:
                 yield mystr + str(num)
 
     def print_to_file(self, file_name, combinations):
+        output_file = open(file_name, "w")
+        for k in combinations:
+            # output_file.writelines(combinations[k])
+            for v in combinations[k]:
+                try:
+                    output_file.write(v + "\n")
+                except:
+                    pass
         print(f"File Name Is {file_name}\n\n")
-        print(combinations)
+        output_file.close()
+        # print(combinations)
 
     def generate_wordlist(self):
         print("[+] Generating Dictionary - ")
@@ -101,14 +120,9 @@ class Profile:
         reverse_nickname = self.profile["nickname"][::-1]
         reverse_nicknameUP = nicknameUP[::-1]
 
-        reverse_n = [
-            reverse_name,
-            reverse_nameUP,
-            reverse_nickname,
-            reverse_nicknameUP
-        ]
+        reverse_n = [reverse_name, reverse_nameUP, reverse_nickname, reverse_nicknameUP]
 
-        # Birthdays combinations
+        # Birthdays combinations 
         birthday_combination = [
             birthdate_yyyy,
             birthdate_dd,
@@ -123,7 +137,12 @@ class Profile:
                     birthday_combinations.append(bds1 + bds2)
 
         # String Combinations
-        combination_pet_college = [self.profile["pet"], petUP, self.profile["college"], collegeUP]
+        combination_pet_college = [
+            self.profile["pet"],
+            petUP,
+            self.profile["college"],
+            collegeUP,
+        ]
 
         name_combination = [
             self.profile["name"],
@@ -138,34 +157,56 @@ class Profile:
         for combinations1 in name_combination:
             name_combinations.append(combinations1)
             for combinations2 in name_combination:
-                if name_combination.index(combinations1) != name_combination.index(combinations2) and name_combination.index(
-                        combinations1.title()
-                ) != name_combination.index(combinations2.title()):
+                if name_combination.index(combinations1) != name_combination.index(
+                    combinations2
+                ) and name_combination.index(
+                    combinations1.title()
+                ) != name_combination.index(
+                    combinations2.title()
+                ):
                     name_combinations.append(combinations1 + combinations2)
 
-
         tot_combinations = {}
-        tot_combinations[1] = list(self.combine(name_combinations, birthday_combinations))
-        tot_combinations[1] += list((name_combinations, birthday_combinations, "_"))
-        tot_combinations[2] = list(self.combine(word, birthday_combinations))
-        tot_combinations[2] += list(self.combine(word, birthday_combinations, "_"))
+        tot_combinations[1] = list(
+            self.combine(name_combinations, birthday_combinations)
+        )
+        tot_combinations[2] = list(self.combine(name_combinations, birthday_combinations, self.profile["special_char"]))
+        tot_combinations[3] = list(self.combine(word, birthday_combinations))
+        tot_combinations[4] = list(self.combine(word, birthday_combinations, self.profile["special_char"]))
         if self.profile["random_num"] == "y":
             numfrom = 0
             numto = 1000
-            tot_combinations[4] = list(self.concatStringsRandomNumbers(word, numfrom, numto))
-            tot_combinations[4] = list(self.concatStringsRandomNumbers(name_combinations, numfrom, numto))
-            tot_combinations[5] = list(self.concatStringsRandomNumbers(combination_pet_college, numfrom, numto))
-            tot_combinations[5] = list(self.concatStringsRandomNumbers(reverse_n, numfrom, numto))
-        tot_combinations[3] = list(self.combine(reverse_n, birthday_combinations))
-        tot_combinations[3] += list(self.combine(reverse_n, birthday_combinations, "_"))
+            tot_combinations[5] = list(
+                self.concatStringsRandomNumbers(word, numfrom, numto)
+            )
+            tot_combinations[6] = list(
+                self.concatStringsRandomNumbers(name_combinations, numfrom, numto)
+            )
+            tot_combinations[7] = list(
+                self.concatStringsRandomNumbers(combination_pet_college, numfrom, numto)
+            )
+            tot_combinations[8] = list(
+                self.concatStringsRandomNumbers(reverse_n, numfrom, numto)
+            )
+        tot_combinations[9] = list(self.combine(reverse_n, birthday_combinations))
+        tot_combinations[10] = list(self.combine(reverse_n, birthday_combinations, self.profile["special_char"]))
         if len(self.profile["special_char"]) > 0:
-            tot_combinations[6] = list(self.combine(name_combinations, self.profile["special_char"]))
-            tot_combinations[7] = list(self.combine(combination_pet_college, self.profile["special_char"]))
-            tot_combinations[8] = list(self.combine(word, self.profile["special_char"]))
-            tot_combinations[9] = list(self.combine(reverse_n, self.profile["special_char"]))
+            tot_combinations[11] = list(
+                self.combine(name_combinations, self.profile["special_char"])
+            )
+            tot_combinations[12] = list(
+                self.combine(combination_pet_college, self.profile["special_char"])
+            )
+            tot_combinations[13] = list(
+                self.combine(word, self.profile["special_char"])
+            )
+            tot_combinations[14] = list(
+                self.combine(reverse_n, self.profile["special_char"])
+            )
 
         self.print_to_file(self.profile["name"] + ".txt", tot_combinations)
 
-person1 = Profile()
-person1.details()
-person1.generate_wordlist()
+
+# person1 = Profile()
+# person1.details()
+# person1.generate_wordlist()
