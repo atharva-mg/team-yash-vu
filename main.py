@@ -1,3 +1,5 @@
+from curses.ascii import islower
+from re import L
 import sys
 from time import sleep
 from colorama import Fore, Back, init, Style
@@ -11,18 +13,18 @@ init(autoreset=True)
 
 if __name__ == "__main__":
     bIndex = random.randint(0, len(BANNEr) - 1)
-    print(Fore.GREEN + BANNEr[bIndex] + "\n")
+    print(Fore.GREEN + BANNEr[bIndex])
     print(
-        """
-\n+-------------------------------+
-| Select one of the following:\t|
+        f"""
+\n{Fore.YELLOW}+-------------------------------+
+| {Fore.RED}Select one of the following:\t{Fore.YELLOW}|
 |-------------------------------|
-| 1 | Enter Target Details.\t|
-| 2 | Evaluate Password.\t|
-| 3 | Exit.\t\t\t|
+| {Fore.GREEN}1{Fore.YELLOW} | {Fore.GREEN}Enter Target Details.\t{Fore.YELLOW}|
+| {Fore.GREEN}2{Fore.YELLOW} | {Fore.GREEN}Evaluate Password.\t{Fore.YELLOW}|
+| {Fore.GREEN}3{Fore.YELLOW} | {Fore.GREEN}Exit.\t\t\t{Fore.YELLOW}|
 +---+---------------------------+"""
     )
-    choice = input("> Enter your choice: ")
+    choice = input(Fore.CYAN+"> Enter your choice: "+Fore.GREEN)
 
     if choice == "1":
         person = Profile()

@@ -1,7 +1,7 @@
 # IBM Hackathon
 # Project - Password Hacks
-
-
+from colorama import Fore, Back, init, Style
+from time import sleep
 class Profile:
     # profile = {
     #     "name": "Hasnain",
@@ -14,57 +14,74 @@ class Profile:
     #     "special_char": "n",
     #     "random_num": "n"
     # }
+    
+    # A Profile Dictionary To Store User Data
     profile = {}
 
+    # Function To Add Details Of User
     def details(self):
-        print("\r\n[+] Insert The Information About The Victim To Make A Dictionary")
-        print("[+] If You Don't Know All The Info, Just Hit Enter \r\n")
+        print(Fore.GREEN+"\n[+] Insert The Information About The Victim To Make A Dictionary\n[+] If You Don't Know All The Info, Just Hit Enter key\n")
 
-        name = input("> First Name : ").lower()
+        # Insert Name Of Victim
+        name = input(Fore.BLUE+"> First Name : "+Fore.GREEN).lower()
         while name == " " or name == "":
-            print("\r\n[-] You Must Enter At Least A Name")
-            name = input("> First Name : ").lower()
+            print(Fore.RED+"\n[-] You Must Enter At Least A Name")
+            name = input(Fore.BLUE+"> First Name : "+Fore.GREEN).lower()
         self.profile["name"] = str(name)
 
-        self.profile["surname"] = input("> Last Name : ").lower()
-        self.profile["nickname"] = input("> Nickname : ").lower()
-        birthdate = input("> Birthdate (DDMMYYYY) : ")
+        # Insert Surname of Victim
+        self.profile["surname"] = input(Fore.BLUE+"> Last Name : "+Fore.GREEN).lower()
+        
+        # Insert Nickname of Victim
+        self.profile["nickname"] = input(Fore.BLUE+"> Nickname : "+Fore.GREEN).lower()
+        
+        # Insert Birthdate of Victim
+        birthdate = input(Fore.BLUE+"> Birthdate (DD/MM/YYYY) : "+Fore.GREEN)
         while len(birthdate) !=0 and len(birthdate)!=8:
-            print("\r\n[-] You Must Enter 8 digiys for birthday! ")
-            birthdate = input("> Birthdate (DDMMYYYY) : ")
+            print(Fore.RED+"\n[-] You Must Enter 8 digiys for birthday! ")
+            birthdate = input(Fore.BLUE+"> Birthdate (DDMMYYYY) : "+Fore.GREEN)
         self.profile["birthdate"] = str(birthdate)
 
-        print("\r\n")
+        print("\n")
 
-        self.profile["pet"] = input("> Pet's Name : ").lower()
-        self.profile["college"] = input("> College Name : ").lower()
-        print("\r\n")
+        # Enter Additional Details of the Victim
 
-        # self.profile["mobile"] = input("> Enter Mobile Number (+91) : ")
+        # Enter Victim's Pet Name (if any)
+        self.profile["pet"] = input(Fore.BLUE+"> Pet's Name : "+Fore.GREEN).lower()
+        
+        # Enter College Name of Victim
+        self.profile["college"] = input(Fore.BLUE+"> College Name : "+Fore.GREEN).lower()
+        print("\n")
+
+        # Additional Words Of the Victim (e.g, hacker, pentester)
         self.profile["words"] = [""]
         words1 = input(
-            "> Do You Want To Add Some Key Words About The Target ? Y/N : "
+            Fore.BLUE+"> Do You Want To Add Some Key Words About The Target ? Y/N : "+Fore.GREEN
         ).lower()
         words2 = ""
-        if words1 == "y":
-            words2 = input("> Enter Words, Separated by comma : ").replace(" ", "")
+        if words1 == "y" or words1 == "Y":
+            words2 = input(Fore.BLUE+"> Enter Words, Separated by comma : "+Fore.GREEN).replace(" ", "")
         self.profile["words"] = words2.split(",")
 
+        # Add Special Characters (@, #, $, etc) (if any)
         self.profile["special_char"] = [""]
         special_char = input(
-            "> Do You Want To Add Special Chars At The End Of Words ? Y/N : "
+            Fore.BLUE+"> Do You Want To Add Special Chars At The End Of Words ? Y/N : "+Fore.GREEN
         ).lower()
         special_char2 = ""
-        if special_char == "y":
+        if special_char == "y" or special_char == "Y":
             special_char2 = input(
-                "> Enter Special Characters, Separated by comma : "
+                Fore.BLUE+"> Enter Special Characters, Separated by comma : "+Fore.GREEN
             ).replace(" ", "")
         self.profile["special_char"] = special_char2.split(",")
 
+        # Add Random Number (if any)
         self.profile["random_num"] = input(
-            "> Do You Want To Add Some Random Numbers At The End Of Words ? Y/N : "
+            Fore.BLUE+"> Do You Want To Add Some Random Numbers At The End Of Words ? Y/N : "+Fore.GREEN
         ).lower()
 
+
+    # Function To Combine Sequence and Start with Special Character
     def combine(self, sequence, start, special=""):
         if len(special) > 0:
             for symb in special:
@@ -76,26 +93,30 @@ class Profile:
                 for mystr1 in start:
                     yield mystr + special + mystr1
 
+    # Function To Concatinate Random Numbers with String
     def concatStringsRandomNumbers(self, sequence, start, stop):
         for mystr in sequence:
             for num in range(start, stop):
                 yield mystr + str(num)
 
+
+    # Function To Write Wordlist To File
     def print_to_file(self, file_name, combinations):
         output_file = open(file_name, "w")
         for k in combinations:
-            # output_file.writelines(combinations[k])
             for v in combinations[k]:
                 try:
                     output_file.write(v + "\n")
                 except:
                     pass
-        print(f"File Name Is {file_name}\n\n")
+        print("\n"+Fore.GREEN+"[+] SUCCESSFULLY CREATED A DICTIONARY FILE\n")
+        print(f"{Fore.GREEN}File Name Is -{Fore.YELLOW} {file_name}\n\n")
         output_file.close()
-        # print(combinations)
 
+    # Function To Generate Wordlist
     def generate_wordlist(self):
-        print("[+] Generating Dictionary - ")
+        print("[+] Generating Dictionary.....")
+        sleep(3)
 
         # Birthdays first
         birthdate_yyyy = self.profile["birthdate"][-4:]
@@ -122,13 +143,14 @@ class Profile:
 
         reverse_n = [reverse_name, reverse_nameUP, reverse_nickname, reverse_nicknameUP]
 
-        # Birthdays combinations 
+        # Birthdays Combinations 
         birthday_combination = [
             birthdate_yyyy,
             birthdate_dd,
             birthdate_mm,
         ]
 
+        # Birthday Combinations(Final)
         birthday_combinations = []
         for bds1 in birthday_combination:
             birthday_combinations.append(bds1)
@@ -144,6 +166,7 @@ class Profile:
             collegeUP,
         ]
 
+        # Name Combination
         name_combination = [
             self.profile["name"],
             self.profile["surname"],
@@ -153,6 +176,7 @@ class Profile:
             nicknameUP,
         ]
 
+        # Name Combinations (Final)
         name_combinations = []
         for combinations1 in name_combination:
             name_combinations.append(combinations1)
@@ -166,47 +190,65 @@ class Profile:
                 ):
                     name_combinations.append(combinations1 + combinations2)
 
+        # Total Combinations (A Dictionary)
         tot_combinations = {}
+        # Combine Name's With Birthday's
         tot_combinations[1] = list(
             self.combine(name_combinations, birthday_combinations)
         )
+        # Combine Name's With Birthday's and Special Characters
         tot_combinations[2] = list(self.combine(name_combinations, birthday_combinations, self.profile["special_char"]))
+        # Combine Words With Birthday's
         tot_combinations[3] = list(self.combine(word, birthday_combinations))
+        # Combine Words With Birthday's and Special Characters
         tot_combinations[4] = list(self.combine(word, birthday_combinations, self.profile["special_char"]))
+        # If Random Number's Selected, add Random Numbers to Strings 
         if self.profile["random_num"] == "y":
+            # Start Range
             numfrom = 0
+            # End Range
             numto = 1000
+
+            # Combine Words With Random Number Range
             tot_combinations[5] = list(
                 self.concatStringsRandomNumbers(word, numfrom, numto)
             )
+            # Combine Name With Random Number Range
             tot_combinations[6] = list(
                 self.concatStringsRandomNumbers(name_combinations, numfrom, numto)
             )
+            # Combine Pet, College Details With Random Number Range
             tot_combinations[7] = list(
                 self.concatStringsRandomNumbers(combination_pet_college, numfrom, numto)
             )
+            # Combine Reverse Strings With Random Number Range
             tot_combinations[8] = list(
                 self.concatStringsRandomNumbers(reverse_n, numfrom, numto)
             )
+        
+        # Combine Reverse Strings with Birthday's
         tot_combinations[9] = list(self.combine(reverse_n, birthday_combinations))
+        # Combine Reverse Strings with Birthday's and Special Character
         tot_combinations[10] = list(self.combine(reverse_n, birthday_combinations, self.profile["special_char"]))
+        
+        # If There are More Than one Special Characters ,append at End
         if len(self.profile["special_char"]) > 0:
+            # Combine Name's with Special Character
             tot_combinations[11] = list(
                 self.combine(name_combinations, self.profile["special_char"])
             )
+            # Combine Pet/College With Special Character
             tot_combinations[12] = list(
                 self.combine(combination_pet_college, self.profile["special_char"])
             )
+            # Combine Word's With Special Character
             tot_combinations[13] = list(
                 self.combine(word, self.profile["special_char"])
             )
+            # Combine Reverse String's With Special Character
             tot_combinations[14] = list(
                 self.combine(reverse_n, self.profile["special_char"])
             )
 
+        # Store Words To Dictionary
         self.print_to_file(self.profile["name"] + ".txt", tot_combinations)
-
-
-# person1 = Profile()
-# person1.details()
-# person1.generate_wordlist()
