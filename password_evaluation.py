@@ -3,13 +3,13 @@ import re
 from password_evaluator import *
 
 def evaluate(password:str)->list:
-    score = evaluate_score(password)
+    score, length, upper_case, lower_case, special, digits = evaluate_score(password)
     if 9 >= score >= 0:
-        return [score, "WEAK", password]
+        return [score, "WEAK", password], length, upper_case, lower_case, special, digits
     elif 17 >= score >= 10:
-        return [score, "AVERAGE", password]
+        return [score, "AVERAGE", password], length, upper_case, lower_case, special, digits
     else:
-        return [score, "STRONG", password]
+        return [score, "STRONG", password], length, upper_case, lower_case, special, digits
         # if 6>=len(password)>0:
         #     return ["2","WEAK",password]
         # if re.findall('[\!\@\#\`\~\$\^\&\*\(\)\[\]\{\}\_\-\=\+\'\"\;\:\.\,\>\<\/\?]',password):

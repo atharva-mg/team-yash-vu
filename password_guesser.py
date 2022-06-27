@@ -109,13 +109,14 @@ class Profile:
                     output_file.write(v + "\n")
                 except:
                     pass
-        print("\n"+Fore.GREEN+"[+] SUCCESSFULLY CREATED A DICTIONARY FILE\n")
-        print(f"{Fore.GREEN}File Name Is -{Fore.YELLOW} {file_name}\n\n")
+        print(Fore.GREEN+"[+] SUCCESSFULLY CREATED A DICTIONARY FILE\n")
+        print(f"{Fore.GREEN}File Name Is -{Fore.YELLOW} {file_name}")
+        print(Fore.GREEN+"File Name Is - "+Fore.YELLOW+self.profile["name"]+"_eval.txt\n\n")
         output_file.close()
 
     # Function To Generate Wordlist
     def generate_wordlist(self):
-        print("[+] Generating Dictionary.....")
+        print("\n[+] Generating Dictionary.....")
         sleep(3)
 
         # Birthdays first
