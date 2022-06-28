@@ -2,12 +2,20 @@ import sys
 from time import sleep
 from colorama import Fore, init
 import random
-from __init__ import BANNEr
 from password_evaluation import evaluate
 from password_guesser import *
 
 init(autoreset=True)
-
+BANNEr = [
+"""
+██████╗  █████╗ ███████╗███████╗    ██╗  ██╗ █████╗ ██╗  ██╗
+██╔══██╗██╔══██╗██╔════╝██╔════╝    ██║  ██║██╔══██╗╚██╗██╔╝
+██████╔╝███████║███████╗███████╗    ███████║███████║ ╚███╔╝ 
+██╔═══╝ ██╔══██║╚════██║╚════██║    ██╔══██║██╔══██║ ██╔██╗ 
+██║     ██║  ██║███████║███████║    ██║  ██║██║  ██║██╔╝ ██╗
+╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝    ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝                                                       
+"""
+]
 
 if __name__ == "__main__":
     bIndex = random.randint(0, len(BANNEr) - 1)

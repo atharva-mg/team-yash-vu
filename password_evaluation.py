@@ -1,10 +1,10 @@
-from __init__ import *
+
 import re
 from password_evaluator import *
 
 def evaluate(password:str)->list:
     """
-    Returns strength according to length of pass
+    Returns strength according to length of password
     """
     score, length, upper_case, lower_case, special, digits = evaluate_score(password)
     if 9 >= score >= 0:
