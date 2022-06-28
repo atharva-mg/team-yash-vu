@@ -1,10 +1,9 @@
 import string
 
-password = "SaMpLEPASSword12@"  # input the password provided by user.
-
-
 def evaluate_score(password):
-
+    """
+    Evaluate `password` and returns multiple utilities
+    """
     upper_case = any([1 if c in string.ascii_uppercase else 0 for c in password])
     lower_case = any([1 if c in string.ascii_lowercase else 0 for c in password])
     special = any([1 if c in string.punctuation else 0 for c in password])
@@ -14,13 +13,6 @@ def evaluate_score(password):
     length = len(password)
 
     score = 0
-    # with open ("Common.txt", "r") as f : #provide wordlist
-    #     common = f.read().splitlines()
-
-    # if password in common :
-    #     print ("Password is found in common list. Score is 0") #if the password is found in any provided wordlist, password will score 0 points.
-    #     exit()
-
     # adding score on the basis of length of password.
 
     if length > 4:
@@ -51,8 +43,5 @@ def evaluate_score(password):
 
     if sum(characters) > 3:
         score += 6
-        
-    return score, length, upper_case, lower_case, special, digits
-    # print(f"Password Has {str(sum(characters))} Different Character Types") #Tells how many different types of characters are used.
 
-    # print(f"Password Length is {str(length)} characters long, your password scored {str(score)}/25 points.") #Shows us final results.
+    return score, length, upper_case, lower_case, special, digits
